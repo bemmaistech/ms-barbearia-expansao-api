@@ -20,9 +20,9 @@ public class CadastroController {
         }
 
     @PostMapping()
-    public String adicionarDados(@RequestBody UserRequestDTO body){
+    public String adicionarDadosController(@RequestBody UserRequestDTO body){
 
 
-        return cadastroService.insertCadastro(body);
+        return cadastroService.adicionarDadosService(body);
     }
 }

@@ -1,24 +1,32 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.service;
-
+import com.bemmaistech.ms_app_barbearia_agendamento.model.AgendamentoModel;
+import com.bemmaistech.ms_app_barbearia_agendamento.repository.CadastroRepository;
 import org.springframework.stereotype.Service;
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.UserRequestDTO;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Service
 public class CadastroService {
-   //CadastroRepository repository;
+   private final CadastroRepository cadastroRepository;
+   public CadastroService(CadastroRepository cadastroRepository) {
+       this.cadastroRepository = cadastroRepository;
+   }
 
-    public String insertCadastro(UserRequestDTO body) {
-       String nome = body.getNome().toUpperCase();
-       String telefone = body.getTelefone().toUpperCase();
-       String servico = body.getData_criacao().toUpperCase();
-       String data = body.getData_criacao().toUpperCase();
 
-       body.setNome(nome);
-       body.setTelefone(telefone);
-       body.setServico(servico);
-       body.setData_criacao(data);
+   public String adicionarDadosService(UserRequestDTO body){
+       AgendamentoModel agendamentoModel = new AgendamentoModel();
+       agendamentoModel.setNome(body.getNome().toUpperCase());
+       agendamentoModel.setTelefone(body.getTelefone().toUpperCase());
+       agendamentoModel.setServicos(body.getServicos());
+       agendamentoModel.setData_criacao(body.getData_criacao());
 
-       return "Informaçoes tratadas";
+       if (body.getTelefone().length() == 11){
+           cadastroRepository.save(agendamentoModel);
+            return "Cadastro realizado com sucesso:  " + "\nID: "+agendamentoModel.getId() + "\nNome: "+agendamentoModel.getNome();
+       }
+       else {
+           return "Numero invalido";
+       }
+
     }
 }
