@@ -46,10 +46,29 @@ class CadastroServiceTest {
 
         AgendamentoNovo saved = captor.getValue();
         assertNotNull(saved);
-        assertEquals(request.nome(), saved.getNome());
-        assertEquals(request.telefone(), saved.getTelefone());
-        assertEquals(request.servicos(), saved.getServicos());
-        assertEquals(request.data_agendamento(), saved.getData_agendamento());
-        assertEquals(request.data_criacao(), saved.getData_criacao());
+
+        try {
+            java.lang.reflect.Field nomeField = saved.getClass().getDeclaredField("nome");
+            nomeField.setAccessible(true);
+            assertEquals(request.nome(), nomeField.get(saved));
+
+            java.lang.reflect.Field telefoneField = saved.getClass().getDeclaredField("telefone");
+            telefoneField.setAccessible(true);
+            assertEquals(request.telefone(), telefoneField.get(saved));
+
+            java.lang.reflect.Field servicosField = saved.getClass().getDeclaredField("servicos");
+            servicosField.setAccessible(true);
+            assertEquals(request.servicos(), servicosField.get(saved));
+
+            java.lang.reflect.Field dataAgendamentoField = saved.getClass().getDeclaredField("data_agendamento");
+            dataAgendamentoField.setAccessible(true);
+            assertEquals(request.data_agendamento(), dataAgendamentoField.get(saved));
+
+            java.lang.reflect.Field dataCriacaoField = saved.getClass().getDeclaredField("data_criacao");
+            dataCriacaoField.setAccessible(true);
+            assertEquals(request.data_criacao(), dataCriacaoField.get(saved));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            fail("Failed to access fields via reflection: " + e.getMessage());
+        }
     }
 }
