@@ -12,8 +12,9 @@ public class MsAppBarbeariaAgendamentoApplication {
 
 	// Tratamento de erros
 	// paginação
-	// Teste unitarios - cm jupter e mokito
-	// adicionar tokem jwt
+	// Teste unitarios - cm jupter e mokito ----
+	//  1 Fazer migration --  2 adicionar tokem jwt --- 3 JWT Secury no aplication Propriers -- Add varialvel de ambiente
+
 
 	
 }
