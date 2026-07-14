@@ -1,10 +1,11 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.controller;
 
-import com.bemmaistech.ms_app_barbearia_agendamento.entity.AgendamentoNovo;
-import com.bemmaistech.ms_app_barbearia_agendamento.repository.AgendamentoRepository;
+import com.bemmaistech.ms_app_barbearia_agendamento.entity.Agendamento;
 import com.bemmaistech.ms_app_barbearia_agendamento.service.CadastroService;
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UpdateAgendamentoRequest;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,21 +15,39 @@ import java.util.List;
 @RequestMapping("/cadastro")
 public class CadastroController {
 
-    @Autowired
-    private CadastroService cadastroService;
-    @Autowired
-    private AgendamentoRepository agendamentoRepository;
+    private final CadastroService cadastroService;
 
-    @GetMapping
-    public List<AgendamentoNovo> visualizarCadastro() {
-        return agendamentoRepository.findAll();
+    public CadastroController(CadastroService cadastroService) {
+        this.cadastroService = cadastroService;
     }
 
-    @PostMapping()
-    public ResponseEntity<String> criar(@RequestBody UserRequest body) {
+    @GetMapping
+    public ResponseEntity<List<Agendamento>> listar() {
+        return ResponseEntity.ok(cadastroService.listarTodos());
+    }
 
-        cadastroService.criarAgendamento(body);
+    @GetMapping("/{id}")
+    public ResponseEntity<Agendamento> obterPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(cadastroService.obterPorId(id));
+    }
 
-        return ResponseEntity.ok("Agendamento concluido com sucesso");
+    @PostMapping
+    public ResponseEntity<Agendamento> criar(@Valid @RequestBody UserRequest request) {
+        Agendamento agendamento = cadastroService.criarAgendamento(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agendamento);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Agendamento> alterar(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateAgendamentoRequest request) {
+        Agendamento agendamento = cadastroService.alterarAgendamento(id, request);
+        return ResponseEntity.ok(agendamento);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        cadastroService.deletarAgendamento(id);
+        return ResponseEntity.noContent().build();
     }
 }

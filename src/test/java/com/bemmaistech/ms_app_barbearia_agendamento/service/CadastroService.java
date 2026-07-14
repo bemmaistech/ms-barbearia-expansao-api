@@ -1,6 +1,6 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.service;
 
-import com.bemmaistech.ms_app_barbearia_agendamento.entity.AgendamentoNovo;
+import com.bemmaistech.ms_app_barbearia_agendamento.entity.Agendamento;
 import com.bemmaistech.ms_app_barbearia_agendamento.repository.AgendamentoRepository;
 import org.springframework.stereotype.Service;
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
@@ -14,7 +14,7 @@ public class CadastroService {
     }
 
     public void criarAgendamento(UserRequest body) {
-        AgendamentoNovo agendamentoModel = new AgendamentoNovo(body);
+        Agendamento agendamentoModel = new Agendamento(body);
         agendamentoRepository.save(agendamentoModel);
     }
 }

@@ -1,6 +1,5 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.entity;
 
-import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,18 +10,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Table(name = "agendamento")
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class AgendamentoNovo {
+@Table(name = "agendamento")
+@Entity
+public class Agendamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    //Adiconar ID do barbeiro
+    private Long id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -33,17 +30,9 @@ public class AgendamentoNovo {
     @Column(name = "servicos")
     private List<String> servicos;
 
-    @Column(name = "data_criacao")
+    @Column(name = "data_criacao", nullable = false)
     private LocalDateTime data_criacao;
 
     @Column(name = "data_agendamento", nullable = false)
     private LocalDateTime data_agendamento;
-
-    public AgendamentoNovo(UserRequest body) {
-        this.nome = body.nome();
-        this.telefone = body.telefone();
-        this.servicos = body.servicos();
-        this.data_criacao = body.data_criacao();
-        this.data_agendamento = body.data_agendamento();
-    }
 }

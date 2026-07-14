@@ -1,9 +1,13 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.service;
 
-import com.bemmaistech.ms_app_barbearia_agendamento.entity.AgendamentoNovo;
+import com.bemmaistech.ms_app_barbearia_agendamento.entity.Agendamento;
 import com.bemmaistech.ms_app_barbearia_agendamento.repository.AgendamentoRepository;
-import org.springframework.stereotype.Service;
+import com.bemmaistech.ms_app_barbearia_agendamento.exception.AgendamentoNaoEncontradoException;
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
+import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UpdateAgendamentoRequest;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CadastroService {
@@ -13,8 +17,40 @@ public class CadastroService {
         this.agendamentoRepository = agendamentoRepository;
     }
 
-    public void criarAgendamento(UserRequest body) {
-        AgendamentoNovo agendamentoModel = new AgendamentoNovo(body);
-        agendamentoRepository.save(agendamentoModel);
+    public Agendamento criarAgendamento(UserRequest request) {
+        Agendamento agendamento = new Agendamento(
+            null,
+            request.nome(),
+            request.telefone(),
+            request.servicos(),
+            request.data_criacao(),
+            request.data_agendamento()
+        );
+        return agendamentoRepository.save(agendamento);
+    }
+
+    public List<Agendamento> listarTodos() {
+        return agendamentoRepository.findAll();
+    }
+
+    public Agendamento obterPorId(Long id) {
+        return agendamentoRepository.findById(id)
+            .orElseThrow(() -> new AgendamentoNaoEncontradoException(id));
+    }
+
+    public Agendamento alterarAgendamento(Long id, UpdateAgendamentoRequest request) {
+        Agendamento agendamento = obterPorId(id);
+        
+        agendamento.setNome(request.nome());
+        agendamento.setTelefone(request.telefone());
+        agendamento.setServicos(request.servicos());
+        agendamento.setData_agendamento(request.data_agendamento());
+        
+        return agendamentoRepository.save(agendamento);
+    }
+
+    public void deletarAgendamento(Long id) {
+        Agendamento agendamento = obterPorId(id);
+        agendamentoRepository.delete(agendamento);
     }
 }

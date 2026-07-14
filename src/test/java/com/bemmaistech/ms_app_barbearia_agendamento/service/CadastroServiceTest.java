@@ -1,7 +1,7 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.service;
 
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
-import com.bemmaistech.ms_app_barbearia_agendamento.entity.AgendamentoNovo;
+import com.bemmaistech.ms_app_barbearia_agendamento.entity.Agendamento;
 import com.bemmaistech.ms_app_barbearia_agendamento.repository.AgendamentoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,10 +41,10 @@ class CadastroServiceTest {
         cadastroService.criarAgendamento(request);
 
         // Assert
-        ArgumentCaptor<AgendamentoNovo> captor = ArgumentCaptor.forClass(AgendamentoNovo.class);
+        ArgumentCaptor<Agendamento> captor = ArgumentCaptor.forClass(Agendamento.class);
         verify(agendamentoRepository, times(1)).save(captor.capture());
 
-        AgendamentoNovo saved = captor.getValue();
+        Agendamento saved = captor.getValue();
         assertNotNull(saved);
 
         try {

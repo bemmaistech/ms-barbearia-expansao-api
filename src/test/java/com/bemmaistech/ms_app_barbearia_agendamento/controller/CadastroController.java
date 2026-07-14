@@ -1,6 +1,6 @@
 package com.bemmaistech.ms_app_barbearia_agendamento.controller;
 
-import com.bemmaistech.ms_app_barbearia_agendamento.entity.AgendamentoNovo;
+import com.bemmaistech.ms_app_barbearia_agendamento.entity.Agendamento;
 import com.bemmaistech.ms_app_barbearia_agendamento.repository.AgendamentoRepository;
 import com.bemmaistech.ms_app_barbearia_agendamento.service.CadastroService;
 import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UserRequest;
@@ -20,7 +20,7 @@ public class CadastroController {
     private AgendamentoRepository agendamentoRepository;
 
     @GetMapping
-    public List<AgendamentoNovo> visualizarCadastro() {
+    public List<Agendamento> visualizarCadastro() {
         return agendamentoRepository.findAll();
     }
 
