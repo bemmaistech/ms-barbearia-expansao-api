@@ -8,6 +8,9 @@ import com.bemmaistech.ms_app_barbearia_agendamento.dto.request.UpdateAgendament
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class CadastroService {
@@ -52,5 +55,15 @@ public class CadastroService {
     public void deletarAgendamento(Long id) {
         Agendamento agendamento = obterPorId(id);
         agendamentoRepository.delete(agendamento);
+    }
+
+    public Map<String, List<String>> obterHorariosPorDia() {
+        DateTimeFormatter dataFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter horaFmt = DateTimeFormatter.ofPattern("HH:mm");
+        return agendamentoRepository.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        a -> a.getData_agendamento().toLocalDate().format(dataFmt),
+                        Collectors.mapping(a -> a.getData_agendamento().toLocalTime().format(horaFmt), Collectors.toList())
+                ));
     }
 }

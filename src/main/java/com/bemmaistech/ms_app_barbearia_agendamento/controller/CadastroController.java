@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/cadastro")
 public class CadastroController {
 
@@ -20,7 +22,10 @@ public class CadastroController {
     public CadastroController(CadastroService cadastroService) {
         this.cadastroService = cadastroService;
     }
-
+    @GetMapping("/horarios-por-dia")
+    public ResponseEntity<Map<String, List<String>>> listarHorariosPorDia() {
+        return ResponseEntity.ok(cadastroService.obterHorariosPorDia());
+    }
     @GetMapping
     public ResponseEntity<List<Agendamento>> listar() {
         return ResponseEntity.ok(cadastroService.listarTodos());
@@ -50,4 +55,6 @@ public class CadastroController {
         cadastroService.deletarAgendamento(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
